@@ -477,7 +477,6 @@ void test_MMWrite (void)
         // write the matrix to the data/comments_*.mtx file
         //----------------------------------------------------------------------
 
-        // snprintf (filename, LEN, LG_DATA_DIR "comments_%s", aname) ;
         rewind (fcomments) ;
         FILE *foutput = tmpfile ( ) ;
         TEST_CHECK (foutput != NULL) ;
