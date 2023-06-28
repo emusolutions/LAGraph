@@ -148,7 +148,16 @@ if ( USING_LUCATAGRAPHBLAS )
         set( LUCATA_ROOT /tools/lucata/ CACHE PATH "Path to lucata toolchain, only used if USING_LUCATA_TOOLCHAIN is on" )
         message( STATUS "LUCATA_ROOT set to ${LUCATA_ROOT}" )
 
-        set( LUCATA_EXTRA_LIBS ${LUCATA_ROOT}/lib/libmemoryweb.a )
+        add_library(memoryweb STATIC IMPORTED)
+        set_target_properties(memoryweb PROPERTIES IMPORTED_LOCATION ${LUCATA_ROOT}/lib/libmemoryweb.a)
+        target_include_directories(memoryweb INTERFACE ${LUCATA_ROOT}/include/memoryweb)
+
+        add_library(emu_c_utils STATIC IMPORTED)
+        set_target_properties(emu_c_utils PROPERTIES IMPORTED_LOCATION ${LUCATA_ROOT}/lib/libemu_c_utils.a)
+        target_include_directories(emu_c_utils INTERFACE ${LUCATA_ROOT}/include/emu_c_utils)
+
+        # emu_c_utils MUST be linked before memoryweb
+        set( LUCATA_EXTRA_LIBS emu_c_utils memoryweb )
 
         message( STATUS "Skipping RPATH for builds with Lucata toolchain because we don't support it." )
         set( CMAKE_SKIP_INSTALL_RPATH ON )

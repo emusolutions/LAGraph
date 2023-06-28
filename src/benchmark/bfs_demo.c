@@ -16,6 +16,7 @@
 //------------------------------------------------------------------------------
 
 #include "LAGraph_demo.h"
+#include "lucata_addons.h"
 
 #define NTHREAD_LIST 1
 #define THREAD_LIST 0
@@ -89,9 +90,11 @@ int main (int argc, char **argv)
     // read in the graph
     //--------------------------------------------------------------------------
 
+    LC_TIMING_WRAPPER_START("LAGr_BFS_demo_read");
     char *matrix_name = (argc > 1) ? argv [1] : "stdin" ;
     LAGRAPH_TRY (readproblem (&G, &SourceNodes,
         false, false, true, NULL, false, argc, argv)) ;
+    LC_TIMING_WRAPPER_END("LAGr_BFS_demo_read");
 
     // compute G->out_degree
     LAGRAPH_TRY (LAGraph_Cached_OutDegree (G, msg)) ;
@@ -154,8 +157,10 @@ int main (int argc, char **argv)
 
                 GrB_free (&parent) ;
                 double ttrial = LAGraph_WallClockTime ( ) ;
+                LC_TIMING_WRAPPER_START("LAGr_BFS_demo_bfs");
                 LAGRAPH_TRY (LAGr_BreadthFirstSearch (NULL, &parent,
                     G, src, msg)) ;
+                LC_TIMING_WRAPPER_END("LAGr_BFS_demo_bfs");
                 ttrial = LAGraph_WallClockTime ( ) - ttrial ;
                 tp [nthreads] += ttrial ;
                 printf ("parent only  pushpull trial: %2d threads: %2d "

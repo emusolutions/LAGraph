@@ -32,6 +32,7 @@
 }
 
 #include "LG_internal.h"
+#include "lucata_addons.h"
 
 int LG_BreadthFirstSearch_vanilla
 (
@@ -42,6 +43,8 @@ int LG_BreadthFirstSearch_vanilla
     char          *msg
 )
 {
+
+    LC_TIMING_WRAPPER_START("LAGr_BFS_alg_setup");
 
     //--------------------------------------------------------------------------
     // check inputs
@@ -109,6 +112,7 @@ int LG_BreadthFirstSearch_vanilla
         // v (src) = 0 denotes the source node
         GRB_TRY (GrB_Vector_new(&l_level, int_type, n)) ;
     }
+    LC_TIMING_WRAPPER_END("LAGr_BFS_alg_setup");
 
     //--------------------------------------------------------------------------
     // BFS traversal and label the nodes
@@ -135,6 +139,8 @@ int LG_BreadthFirstSearch_vanilla
 
         if (compute_parent)
         {
+            LC_TIMING_WRAPPER_START("LAGr_BFS_alg_compute_parent");
+
             // frontier(i) currently contains the parent id of node i in tree.
             // l_parent<s(frontier)> = frontier
             GRB_TRY( GrB_assign(l_parent, frontier, GrB_NULL,
@@ -143,12 +149,16 @@ int LG_BreadthFirstSearch_vanilla
             // convert all stored values in frontier to their indices
             GRB_TRY (GrB_apply (frontier, GrB_NULL, GrB_NULL, ramp,
                 frontier, 0, GrB_NULL)) ;
+            LC_TIMING_WRAPPER_END("LAGr_BFS_alg_compute_parent");
+
         }
 
+        LC_TIMING_WRAPPER_START("LAGr_BFS_alg_vxm");
         // frontier = kth level of the BFS
         // mask is l_parent if computing parent, l_level if computing just level
         GRB_TRY( GrB_vxm(frontier, mask, GrB_NULL, semiring,
                          frontier, A, GrB_DESC_RSC) );
+        LC_TIMING_WRAPPER_END("LAGr_BFS_alg_vxm");
 
         // done if frontier is empty
         GRB_TRY( GrB_Vector_nvals(&nvals, frontier) );
