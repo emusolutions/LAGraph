@@ -140,15 +140,19 @@ int LG_BreadthFirstSearch_vanilla
         if (compute_parent)
         {
             LC_TIMING_WRAPPER_START("LAGr_BFS_alg_compute_parent");
-
-            // frontier(i) currently contains the parent id of node i in tree.
-            // l_parent<s(frontier)> = frontier
+            // printf("TEST HERE %s\n", __FUNCTION__);
+            // frontier(i) currently contains the pa
+            // LC_TIMING_WRAPPER_START("LAGr_BFS_alg_parent_assign");
             GRB_TRY( GrB_assign(l_parent, frontier, GrB_NULL,
                                 frontier, GrB_ALL, n, GrB_DESC_S) );
+            // LC_TIMING_WRAPPER_END("LAGr_BFS_alg_parent_assign");
 
             // convert all stored values in frontier to their indices
+            // LC_TIMING_WRAPPER_START("LAGr_BFS_alg_parent_apply");
             GRB_TRY (GrB_apply (frontier, GrB_NULL, GrB_NULL, ramp,
                 frontier, 0, GrB_NULL)) ;
+            // LC_TIMING_WRAPPER_END("LAGr_BFS_alg_parent_apply");
+
             LC_TIMING_WRAPPER_END("LAGr_BFS_alg_compute_parent");
 
         }
