@@ -157,10 +157,8 @@ int main (int argc, char **argv)
 
                 GrB_free (&parent) ;
                 double ttrial = LAGraph_WallClockTime ( ) ;
-                LC_TIMING_WRAPPER_START("LAGr_BFS_demo_bfs");
                 LAGRAPH_TRY (LAGr_BreadthFirstSearch (NULL, &parent,
                     G, src, msg)) ;
-                LC_TIMING_WRAPPER_END("LAGr_BFS_demo_bfs");
                 ttrial = LAGraph_WallClockTime ( ) - ttrial ;
                 tp [nthreads] += ttrial ;
                 printf ("parent only  pushpull trial: %2d threads: %2d "

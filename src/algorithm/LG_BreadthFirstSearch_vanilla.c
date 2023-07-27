@@ -157,6 +157,7 @@ int LG_BreadthFirstSearch_vanilla
 
         }
 
+        // Commenting out timers for vxm 
         LC_TIMING_WRAPPER_START("LAGr_BFS_alg_vxm");
         // frontier = kth level of the BFS
         // mask is l_parent if computing parent, l_level if computing just level
@@ -175,5 +176,11 @@ int LG_BreadthFirstSearch_vanilla
     if (compute_parent) (*parent) = l_parent ;
     if (compute_level ) (*level ) = l_level ;
     LG_FREE_WORK ;
+
+
+    // Add section to let us know when BFS ends (for data processing)
+    // LC_TIMING_WRAPPER_START("LAGr_BFS_alg_final");
+    // LC_TIMING_WRAPPER_END("LAGr_BFS_alg_final");
+
     return (GrB_SUCCESS) ;
 }
