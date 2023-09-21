@@ -54,6 +54,10 @@ def check_for_avg_iter(line: str, d_sum: dict) -> bool:
         d_sum["avg. iter (s)"].append(float(line.split()[4]))
         return True
 
+    elif "nthreads:   1 time" in line and len(line.split()) == 6:
+        d_sum["avg. iter (s)"].append(float(line.split()[3]))
+        return True
+
     return False
 
 

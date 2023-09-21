@@ -27,3 +27,5 @@ touch ${BENCH_INFO_FILE}
 echo -e "[application-software]\n[application-software.lagraph]\n" >> ${BENCH_INFO_FILE}
 echo -e "hash = \"$(git rev-parse HEAD)\"" >> ${BENCH_INFO_FILE}
 echo -e "cmake_args = \"${CMAKE_CONFIG}\"" >> ${BENCH_INFO_FILE}
+
+chmod +777 ${BUILD_DIR}/src/benchmark/*_demo
